@@ -1,0 +1,12 @@
+#Oracle' da PL SQL
+
+
+select * from (
+    select  extract(Month from SEVKIYAT_TARIHI) as "Month",extract(Year from SEVKIYAT_TARIHI) as "Year", SBU, sum(SEVK_MIKTAR) as SEVK_MIKTAR from VFACT_SEVKIYAT
+    where BALYA_IADE IS NULL and SBU in ('AK' , 'AT')
+    group by extract(Month from SEVKIYAT_TARIHI),extract(Year from SEVKIYAT_TARIHI), SBU
+)
+PIVOT ( 
+    sum (SEVK_MIKTAR) for "Month" in (1 "Ocak",2 "Şubat",3 "Mart",4 "Nisan",5 "Mayıs",6 "Haziran",7 "Temmuz",8 "Ağustos",9 "Eylül",10 "Ekim",11 "Kasım",12 "Aralık")
+    )
+order by "Year", SBU
